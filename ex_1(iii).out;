@@ -1,0 +1,43 @@
+// a) the names of all library books published by Macmillan
+mysql> SELECT TITLE FROM TITLES WHERE PUBLISHER = 'Macmillan';
++----------+
+| TITLE    |
++----------+
+| Susannah |
+| The Wife |
++----------+
+2 rows in set (0.00 sec)
+
+// b) branches that hold any books by Ann Brown (using a nested subquery)
+mysql> SELECT DISTINCT BRANCH FROM HOLDINGS WHERE TITLE IN (SELECT TITLE FROM TITLES WHERE AUTHOR = 'Ann Brown');
++--------+
+| BRANCH |
++--------+
+| B1     |
+| B2     |
+| B3     |
++--------+
+3 rows in set (0.00 sec)
+
+// c) branches that hold any books by Ann Brown (without using a nested subquery)
+mysql> SELECT DISTINCT BRANCH FROM HOLDINGS LEFT JOIN TITLES ON HOLDINGS.TITLE = TITLES.TITLE WHERE AUTHOR = 'Ann Brown';
++--------+
+| BRANCH |
++--------+
+| B1     |
+| B2     |
+| B3     |
++--------+
+3 rows in set (0.00 sec)
+
+// d) the total number of books held at each branch
+mysql> SELECT BRANCH, SUM(COPIES) AS 'TOTAL COPIES' FROM HOLDINGS GROUP BY BRANCH;
++--------+--------------+
+| BRANCH | TOTAL COPIES |
++--------+--------------+
+| B1     |            6 |
+| B2     |            9 |
+| B3     |            9 |
++--------+--------------+
+3 rows in set (0.00 sec)
+

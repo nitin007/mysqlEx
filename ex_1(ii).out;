@@ -1,0 +1,36 @@
+// a) places where jones can eat at (using nested subquery)
+mysql> SELECT DISTINCT LOCATION FROM SANDWICHES WHERE FILLING IN((SELECT FILLING FROM TASTES WHERE NAME = 'Jones'));
++-----------+
+| LOCATION  |
++-----------+
+| O'Neill's |
+| Buttery   |
++-----------+
+2 rows in set (0.00 sec)
+
+
+
+// b) places where jones can eat at (without using nested subquery)
+mysql> SELECT LOCATION AS 'Jones can eat at' FROM SANDWICHES LEFT JOIN TASTES ON SANDWICHES.FILLING = TASTES.FILLING WHERE NAME = 'Jones';
++------------------+
+| Jones can eat at |
++------------------+
+| O'Neill's        |
+| Buttery          |
++------------------+
+2 rows in set (0.00 sec)
+
+
+
+// c) for each location the number of people who can eat there
+mysql> SELECT LOCATION, COUNT(*) AS 'NO OF PEOPLES' FROM (SELECT LOCATION, NAME FROM SANDWICHES LEFT JOIN TASTES ON SANDWICHES.FILLING = TASTES .FILLING GROUP BY LOCATION, NAME) AS T GROUP BY LOCATION;
++-----------+---------------+
+| LOCATION  | NO OF PEOPLES |
++-----------+---------------+
+| Buttery   |             3 |
+| Lincoln   |             2 |
+| O'Neill's |             3 |
+| Old Nag   |             2 |
++-----------+---------------+
+4 rows in set (0.00 sec)
+

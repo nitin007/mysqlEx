@@ -1,0 +1,10 @@
+
+mysql> create database vtapp;
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> create user 'vtapp_user'@'localhost' identified by 'vtpass';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> grant all on vtapp.* to vtapp_user@localhost;
+Query OK, 0 rows affected (0.00 sec)

@@ -1,0 +1,20 @@
+/*write queries for: 
+# manage categories, articles, comments, and users 
+# select all articles and comments associated with that articles which is associated with user 3 in one query.*/
+
+
+mysql> select user, type, comments from user_art inner join
+    -> (select UT_id, comments from comments where AC_id in (select AC_id from user_art where user = 'user3')) as temp
+    -> on user_art.UT_id = temp.UT_id;
++-------+--------+------------------+
+| user  | type   | comments         |
++-------+--------+------------------+
+| user1 | admin  | nice one         |
+| user3 | admin  | very nice        |
+| user3 | admin  | not effective    |
+| user2 | normal | must be improved |
+| user2 | admin  | good work        |
+| user1 | admin  | very effective   |
++-------+--------+------------------+
+6 rows in set (0.00 sec)
+
